@@ -1,0 +1,43 @@
+proc import datafile = '/folders/myshortcuts/My_SAS_Folder/CSV/Macy_Data.csv'
+out = macy_data
+replace;
+run;
+
+proc import datafile = '/folders/myshortcuts/My_SAS_Folder/CSV/WordPolarity.csv'
+out = polarity
+replace;
+run;
+
+
+Data Tweet_1( keep = id word);
+set macy_data( obs = 2 keep = tweet);
+length word $10;
+tweet1 = compress( tweet, , 'P');
+ID+1;
+/* twt = compress( tweet, compress( tweet , ' ','AD')) ; */
+do i = 1 to countw(tweet1);
+word = left(lowcase(scan( tweet1,i,' ')));
+output;
+end;
+run;
+
+
+
+
+
+Data polarity1( drop = word rename =(word1 = word) );
+set polarity;
+word1 = left(lowcase(word));
+run;
+
+proc sort data = polarity1; by word ; run;
+proc sort data = Tweet_1; by word; run;
+
+Data All;
+merge tweet_1( in = a) polarity1(in = b);
+by word;
+if a and b;
+run;
+proc sort data = all; by id; run;
+
+

@@ -1,0 +1,214 @@
+
+libname new '/folders/myshortcuts/My_SAS_Folder/CE_CODE/temp';
+OPTIONS OBS = 1;
+proc copy in = sashelp out = new memtype = data;
+run;
+
+
+%macro change_var_name(lib=,ds=,prefix=, NUM= );
+
+	proc contents data=&lib..&ds. out=VARS_&NUM(keep=name) noprint; run;
+	
+	proc sql noprint;
+		select count(DISTINCT name) into: cnt                from VARS_&NUM;
+		%let cnt = &cnt.;
+		select name        into: name1 - :name&cnt.          from VARS_&NUM;
+	quit;
+	
+	proc datasets lib=&lib. noprint;
+		modify &ds.;
+		%do i=1 %to &cnt.;
+			rename &&name&i.=&prefix._&&name&i.;
+		%end;
+	quit;
+%mend ;
+
+proc sql noprint;
+create table datasets as
+select distinct memname from sashelp.vtable
+where libname='NEW';
+quit;
+
+data _NULL_;
+set work.datasets( OBS = 5);
+call execute('%change_var_name(lib='||'new'||',' || 'ds=' ||memname ||','|| 'prefix=' ||'x'|| ','|| 'NUM='||_N_||')' );
+run;
+
+proc printto log = "/folders/myshortcuts/My_SAS_Folder/CE_CODE/temp/_mylog_&sysdate..txt";
+run;
+
+
+
+
+/* PROJECT 1  */
+
+
+PROC IMPORT DATAFILE = '/folders/myshortcuts/My_SAS_Folder/Coding practice Assignments for Base SAS/Dummy_data.csv'
+OUT = BASE_DATA REPLACE;
+RUN;
+
+
+PROC SQL;
+CREATE TABLE ACTIVE_MANAGER AS
+SELECT BRCODE, COUNT( DISTINCT ECN ) AS CNT , COUNT ( DISTINCT ACCTS) AS ACC
+FROM BASE_DATA
+WHERE COMPRESS(UPCASE(EMP_STATUS)) = 'ACTIVE'
+AND UPCASE(EMP_NAME)  NOT ? 'UNMAPPED'
+GROUP BY 1
+ORDER BY CNT DESC;
+QUIT;
+
+
+
+
+
+PROC SQL;
+CREATE TABLE ACTIVE_MANAGER AS
+SELECT  ECN , EMP_STATUS , COUNT ( DISTINCT ACCTS) AS ACC
+FROM BASE_DATA
+WHERE  BRCODE = 28
+GROUP BY 1,2;
+QUIT;
+
+
+
+/* --------------------------------- */
+
+DATA BR_28;
+SET BASE_DATA;
+WHERE BRCODE = 28;
+RUN;
+
+
+DATA BR_28_UNMP BR_28_ACTIVE;
+SET BR_28;
+IF  UPCASE(EMP_NAME)  = 'UNMAPPED' OR 
+    INDEX( EMP_STATUS, "RESIG") GT 0 THEN OUTPUT BR_28_UNMP;
+ELSE IF  UPCASE(EMP_NAME)  = 'ACTIVE' OR 
+    INDEX( EMP_STATUS, "RESIG") EQ 0 THEN OUTPUT BR_28_ACTIVE;
+    
+RUN;
+
+
+PROC FREQ DATA = BR_28_ACTIVE;
+TABLES EMP_STATUS;
+RUN;
+
+PROC FREQ DATA = BR_28_UNMP;
+TABLES EMP_STATUS * EMP_NAME;
+RUN;
+
+
+PROC SQL;
+CREATE TABLE BR_28_ACTIVE_AGG AS
+SELECT EMP_NAME , COUNT( DISTINCT ACCTS) AS ACCT_COUNT
+FROM BR_28_ACTIVE
+GROUP BY 1;
+QUIT;
+
+DATA BR_28_ACTIVE_AGG_LE200;
+SET BR_28_ACTIVE_AGG;
+WHERE ACCT_COUNT LT 200;
+ACCT_NEEDED = 200- ACCT_COUNT ;
+RUN;
+
+
+DATA BR_28_ACTIVE_AGG_LE200_1( KEEP = EMP_NAME I);
+SET BR_28_ACTIVE_AGG_LE200;
+	DO I = 1 TO ACCT_NEEDED;
+		OUTPUT;
+	END;
+RUN;
+
+PROC SORT DATA = BR_28_ACTIVE_AGG_LE200_1 ;
+BY I;
+RUN;
+
+
+DATA BR_28_ACCT_ASSIGNED;
+MERGE 
+BR_28_UNMP(KEEP = ACCTS )
+BR_28_ACTIVE_AGG_LE200_1;
+RUN;
+
+
+/* MEGHA:  */
+/* 8130086909 */
+
+
+/* ---------------ARRAY----------- */
+
+
+
+DATA TEST;
+SET SASHELP.CLASS;
+ARRAY T(*) NAME AGE;
+RUN;
+
+
+
+
+
+DATA TEST;
+SET SASHELP.YR1001;
+ARRAY MONIKA(*) S:;
+
+DO I = 1 TO DIM(MONIKA);
+	IF MONIKA(I) = . THEN MONIKA(I) = 0;
+END;
+
+RUN;
+
+
+
+DATA TEST;
+X = INPUT( PUT( 201606 , 6.), YYMMN6.);
+FORMAT X DATE9.;
+RUN;
+
+
+
+DATA TEST;
+INPUT DT;
+INFORMAT DT YYMMN6.;
+FORMAT DT DATE9.;
+DATALINES;
+196002
+;
+RUN;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

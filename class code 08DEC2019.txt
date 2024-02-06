@@ -1,0 +1,217 @@
+libname new '/folders/myshortcuts/My_SAS_Folder/_9NOV';
+
+data new.test_8dec;
+x=1;
+run;
+
+data test_8dec;
+x=1;
+run;
+
+proc print data = test_8dec;
+run;
+
+data test;
+infile '/folders/myshortcuts/My_SAS_Folder/abc.txt';
+input Name $ age sal;
+run;
+
+
+
+data test;
+input Name $ age sal;
+datalines;
+aa 12 12000
+bb 34 34000
+cc 45 45000
+;
+run;
+
+
+
+
+
+
+data test;
+input Name $ age sal;
+datalines;
+aa             12      12000
+bb       34    34000
+cc             45      45000
+;
+run;
+
+
+
+
+
+data test;
+input Name $ age sal;
+datalines;
+aa 12 12000 aa1 12 12000
+bb 34 34000 bb1 34 34000
+cc 45 45000 cc1 45 45000
+;
+run;
+
+
+
+data test;
+input Name $ age sal;
+datalines;
+aa 12 12000
+bb 34  
+34000 
+cc 45 45000 
+dd 46 45000
+;
+run;
+
+
+
+
+
+data test;
+input Name $ age  sal ;
+datalines;
+aa 12 12000
+bb 34   
+cc 45 45000 
+dd 46 45000
+;
+run;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+data test;
+infile datalines missover;
+input Name $ age  sal  ;
+datalines;
+aa 12 12000
+bb 34   
+cc 45 45000 
+dd 46 45000
+;
+run;
+
+
+
+data test;
+infile datalines missover;
+input Name $ age  sal $ ;
+datalines;
+aa 12 12000
+bb   
+cc 45 45000 
+dd 46 45000
+;
+run;
+
+
+
+
+
+data test;
+infile datalines missover;
+input Name $ age  sal  ;
+datalines;
+aa 12 12000
+  
+cc 45 45000 
+dd 46 45000
+;
+run;
+
+
+
+
+8595155103
+0124-4023738
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+data test;
+infile datalines missover;
+input Name $ age  sal  ;
+datalines;
+aa 12 12000
+bb   34000
+cc 45 45000 
+dd 46 45000
+;
+run;
+
+
+
+
+
+
+
+
+
+data test;
+infile datalines missover;
+input id  $ age  sal  ;
+datalines;
+1001 12 12000
+1002   34000
+1003 45 45000 
+1004 46 45000
+;
+run;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

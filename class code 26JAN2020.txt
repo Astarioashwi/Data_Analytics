@@ -1,0 +1,147 @@
+
+proc print data = sashelp.class;
+title "todat is &sysday.";
+run;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%let year = 1998;
+Data _&year._year;
+set sashelp.prdsal2;
+where year = &year.;
+run;
+
+/* proc datasets lib = work kill; */
+/* run; */
+
+
+
+%let b1 = 50;
+%let v=1;
+
+%put &&b&v.;
+
+
+%let x = 10;
+
+
+Data _null_;
+call symput ('y' , 20);
+call symputx ('y1' , 20);
+run;
+
+%put --- &x.;
+%put --- &y.;
+%put --- &y1.;
+
+
+
+data test;
+set sashelp.class;
+call symput ('ag', age );
+run;
+%put --- &ag.;
+
+
+proc print; run;
+
+
+
+data test;
+set sashelp.class;
+TOT+ age;
+call symput ('TOT1', tot );
+run;
+%put --- &tot1.;
+
+
+
+
+data test;
+set sashelp.class;
+
+call symput ('namelist', tot );
+run;
+%put --- &namelist.;
+
+data _NULL_;
+set sashelp.class ; 
+length namelist $200;
+retain namelist;
+namelist = catx(',', namelist , name);
+call symput ('list', namelist);
+run;
+
+%put --- &list.;
+
+
+
+
+
+
+
+
+
+
+data _NULL_;
+set sashelp.class;
+call symput (cats('N',_n_), name  );
+run;
+%put --- &n.;
+
+
+data _NULL_;
+set sashelp.class;
+y= cats('N',_n_);
+call symput (y, name  );
+run;
+%put --- &n.;
+
+
+
+
+
+
+data _NULL_;
+set sashelp.class;
+call symput (name , name  );
+run;
+
+%put _user_;
+
+
+
+
+
+
+%let state = Colorado;
+Data &State;
+set sashelp.prdsal2;
+where upcase(state ) = upcase("&State");
+run;
+
+proc freq data = sashelp.prdsal2;;
+tables state;
+run;
+
+
+
+
+
+
+
+

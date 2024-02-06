@@ -1,0 +1,387 @@
+data test;
+infile '/folders/myshortcuts/My_SAS_Folder/READ_this_file_with_data_step.csv' dsd firstobs = 2;
+length country  $20 state $25;
+input COUNTRY $ STATE $ COUNTY $ ACTUAL PREDICT PRODTYPE $ PRODUCT $ YEAR QUARTER MONTH $ MONYR ;
+informat ACTUAL PREDICT dollar. monyr monyy5.;
+informat ACTUAL PREDICT dollar15.2 monyr monyy5.;
+run;
+
+
+data test;
+set sashelp.class;
+if age = 14 then flag = 1;
+run;
+
+
+
+data test;
+set sashelp.class;
+if age = 14 then flag = 1;
+if age = 15 then flag = 2;
+run;
+
+
+
+data test;
+set sashelp.class;
+if age = 14 then flag = 1;
+else flag = 2;
+run;
+
+
+
+
+
+data test;
+set sashelp.class;
+if age = 14 then flag = 11;
+
+if age = 15 then flag = 1;
+else flag = 2;
+run;
+
+
+
+data test;
+set sashelp.class;
+	 if age = 14 then flag = 11;
+else if age = 15 then flag =  1;
+else flag = 2;
+run;
+
+
+
+
+data test;
+set sashelp.class;
+if age = 14 and sex = 'M' then flag = 11;
+else flag = 2;
+run;
+
+
+
+data test;
+set sashelp.class;
+if age gt 14 and sex eq 'M' then do;
+								flag = 11;
+								group = 'A';
+								end;
+else do;
+			flag = 2;
+			group = 'B';
+	 end;
+run;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+data test;
+set sashelp.class;
+/* if age = 14 or age = 15 or age =16 or age = 11 then flag = 'A'; */
+if age in (14 ,15 ,16,13) then flag = 'A';
+run;
+
+data test;
+set sashelp.class;
+if age in (13 : 16) then flag = 'A';
+run;
+
+
+
+
+data test;
+set sashelp.class;
+if age = 14;
+put _ALL_;
+run;
+
+
+data test;
+x=1;
+if x = 1 then y = 20;
+if x = 2 then y = 30;
+if x = 3 then y = 40;
+if x = 4 then y = 50;
+else y = 1000;
+run;
+
+
+data test;
+x=1;
+	 if x = 1 then y = 20;
+else if x = 2 then y = 30;
+else if x = 3 then y = 40;
+else if x = 4 then y = 50;
+else y = 1000;
+run;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+data nums;
+input x @@;
+datalines;
+1 2 3 4 5
+;run;
+
+
+data test;
+set nums;
+if x = 1 then y = 20;
+else if x = 2 then y = 30;
+else if x = 3 then y = 40;
+else if x = 4 then y = 50;
+else y = 1000;
+run;
+
+
+
+
+data test;
+set nums;
+if x = 1 then y = 20;
+if x = 2 then y = 30;
+if x = 3 then y = 40;
+if x = 4 then y = 50;
+else y = 1000;
+run;
+
+
+
+
+
+
+
+data test;
+set sashelp.class;
+if age = 14;
+if age = 15;
+if age = 16;
+run;
+
+
+data test;
+set sashelp.class;
+flag = age = 14 ;
+run;
+
+
+
+data test1;
+set test;
+if  flag =  1 ;
+run;
+
+
+
+data test1;
+set sashelp.class end = k;
+put _ALL_;
+if k ;
+run;
+
+
+
+
+data test1;
+set sashelp.class end = k;
+KEEP NAME;
+PUT _ALL_
+run;
+
+
+data test1(KEEP = NAME);
+set sashelp.class ;
+PUT _ALL_;
+run;
+
+data test1;
+set sashelp.class (KEEP = NAME);
+PUT _ALL_;
+run;
+
+
+data test1;
+set sashelp.class end = k;
+DROP NAME;
+PUT _ALL_
+run;
+
+
+data test1(DROP = NAME);
+set sashelp.class ;
+PUT _ALL_;
+run;
+
+data test1;
+set sashelp.class (DROP = NAME);
+PUT _ALL_;
+run;
+
+data test1;
+set sashelp.class end = k;
+DROP NAME;
+run;
+
+
+data test1;
+set sashelp.class end = k;
+IF  MOD(_N_,5) = 0 ;
+
+run;
+
+
+/* ASSIGNMENT: MODIFY THE BELOW PROGRAM TO 
+			   READ EVERY 5TH OBSERVATION WITHOUT USING MOD*/
+data test1;
+NUM = 5;
+set sashelp.class POINT = NUM;
+OUTPUT;
+STOP;
+run;
+
+
+
+DATA T1;
+SET SASHELP.CLASS;
+OUTPUT;
+RUN;
+
+DATA T1 T2 T3;
+SET SASHELP.CLASS;
+OUTPUT;
+RUN;
+
+DATA T1 T2 T3;
+SET SASHELP.CLASS;
+OUTPUT T2;
+RUN;
+
+
+DATA T1 ;
+SET SASHELP.CLASS;
+OUTPUT ;
+OUTPUT ;
+OUTPUT ;
+RUN;
+
+
+
+DATA T1 T2 T3;
+SET SASHELP.CLASS;
+IF SEX = 'M' THEN OUTPUT T1 ;
+ELSE OUTPUT T2 ;
+RUN;
+
+
+DATA T1 T2 T3;
+SET SASHELP.CLASS;
+IF SEX = 'M' THEN OUTPUT T1 ;
+ELSE OUTPUT T2 ;
+OUTPUT ;
+RUN;
+
+
+DATA TEST;
+X = 1; 
+OUTPUT;
+Y=1;
+RUN;
+
+
+
+
+DATA TEST;
+X = 1; 
+OUTPUT;
+Y=1;
+OUTPUT;
+RUN;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DATA TEST;
+X = 'DELHI'; Y = 'JAIPUR';
+OUTPUT;
+X = 'BANGALORE'; Y = 'CHENNAI';
+OUTPUT;
+X = 'NEWYORK'; Y = 'ST. LOUIS';
+RUN;
+
+
+
+
+
+
+
+
+
+
+
+
+
+

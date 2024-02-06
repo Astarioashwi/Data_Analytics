@@ -1,0 +1,371 @@
+data test;
+x = 60;
+format x date9.;
+run;
+
+
+
+data test;
+input tob;
+informat tob time8.;
+datalines;
+00:01:01
+;
+run;
+
+
+data test;
+input tob;
+informat tob time8.;
+format tob timeampm10.;
+datalines;
+00:01:01
+;
+run;
+
+
+
+
+data test;
+input tob;
+informat tob time8.;
+format tob timeampm10.;
+datalines;
+24:59:00
+;
+run;
+
+
+
+
+
+
+
+
+
+
+
+
+data test;
+input Dtob;
+informat dtob datetime20.;
+format dtob datetime20.;
+datalines;
+01JAN1960:01:01:01
+;
+run;
+
+
+
+data test;
+input Dtob;
+informat dtob datetime20.;
+format dtob datetime20.;
+datalines;
+01JAN1960:23:01:01
+;
+run;
+
+
+
+
+data test;
+input Dtob;
+format dtob datetime20.;
+datalines;
+-20
+;
+run;
+
+
+
+
+data test;
+input Dtob;
+informat dtob datetime20.;
+format dtob date9.;
+datalines;
+01JAN1960:00:01:01
+;
+run;
+
+
+
+
+
+data test;
+input Dtob;
+informat dtob datetime20.;
+dt = datepart(dtob);
+tm = timepart(dtob);
+datalines;
+01JAN1960:00:01:01
+;
+run;
+
+
+
+
+
+
+data test;
+x= 60;
+dt = datepart(x);
+tm = timepart(x);
+run;
+
+
+
+data test;
+x= 60;
+y = 'A';
+z = '31JAN1960'd;
+z1= '00:01:01't;
+z2= '31JAN2019:01:01:01'dt;
+run;
+
+
+
+data test;
+
+dt = datepart('31JAN1960:01:01:01'dt);
+tm = timepart('31JAN1960:01:01:01');
+run;
+
+
+
+
+data test;
+dt = datepart('31JAN1960'd);
+tm = timepart('31JAN1960'd);
+format dt date9. tm time8.;
+run;
+
+
+
+data test;
+dt = datepart(30);
+dt1= datepart( '01jan1960:00:00:30'dt);
+tm = timepart(30);
+tm1= timepart('01jan1960:00:00:30'dt);
+format dt date9. tm time8.;
+run;
+
+
+
+
+
+
+
+data test;
+input dob;
+informat dob date7.;
+datalines;
+31JAN60
+;run;
+
+
+
+
+options yearcutoff = 1780;
+
+data test;
+input dob;
+informat dob date7.;
+format dob date9.;
+datalines;
+31JAN60
+;run;
+
+
+
+
+
+
+
+
+
+
+
+options yearcutoff = 2057;
+
+data test;
+input dob;
+informat dob date7.;
+format dob date9.;
+datalines;
+31JAN72
+01MAR12
+03FEB39
+10OCT17
+;run;
+
+
+
+
+
+options yearcutoff = 1911;
+
+data test;
+input dob;
+informat dob date7.;
+format dob date9.;
+datalines;
+31JAN1972
+01MAR2112
+03FEB39
+10OCT2017
+;run;
+
+
+
+
+
+data test;
+input dob;
+informat dob date7.;
+anydat = dob + 3;
+format dob anydat date9.;
+datalines;
+31JAN1960
+;run;
+
+
+
+
+
+data test;
+dt = '31JAN1960'd;
+dt2 = '31MAR1960'd;
+diff = dt2- dt; 
+run;
+
+
+
+
+data test;
+dt = '28DEC1959'd;
+dt2 = '10JAN1960'd;
+diff = dt2- dt; 
+run;
+
+
+
+
+
+
+
+
+/* Column input */
+
+data test;
+input name $ 1 - 10  age 12-13 sal 16-20;
+datalines;
+Mr Ram     32  32000
+Mr Rom     34  89000
+MR Robert  34  78000
+;run;
+
+
+data test;
+input name $ 1 - 10  age 12-13 sal 16-20;
+datalines;
+Mr Ram     32  32000
+Mr Rom         
+MR Robert  34  78000
+;run;
+
+
+
+
+data test;
+input age 12-13 sal 16-20 name $ 1 - 10  ;
+datalines;
+Mr Ram     32  32000
+Mr Rom     34  89000
+MR Robert  34  78000
+;run;
+
+
+
+data test;
+input city $1-3 dept $ 4-5 num 6-8 grade $9 code 10-11 ;
+datalines;
+DELD1001A11
+CHED2001B12
+MUMD3119E01
+;run;
+
+
+data test;
+input city $1-3 dept $ 4-5 grade $9  ;
+datalines;
+DELD1001A11
+CHED2001B12
+MUMD3119E01
+;run;
+
+
+
+
+
+
+data test;
+put _ALL_;
+input dob $;
+NV = 1;
+put _ALL_;
+datalines;
+31JAN72
+01MAR12
+03FEB39
+10OCT17
+;run;
+
+
+
+
+
+data test;
+put _ALL_;
+set sashelp.air;
+nv = 1;
+put _ALL_;
+;run;
+
+
+
+
+proc contents data = sashelp.class;
+run;
+
+
+
+proc contents data =  test;
+run;
+
+
+
+
+proc contents data =  sashelp.class out= t1;
+run;
+
+
+proc contents data =  sashelp._ALL_ out= t2 noprint;
+run;
+
+
+
+
+
+proc contents data = sashelp.class varnum;
+run;
+
+
+/* 8595155103 */
+
+
+
+
+
+

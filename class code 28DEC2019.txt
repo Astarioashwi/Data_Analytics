@@ -1,0 +1,221 @@
+data test;
+set sashelp.class end = k;
+tot  + age;
+if k;
+keep tot;
+run;
+
+
+data test;
+set sashelp.class end = k ; 
+retain max;
+if _N_=1 then max = age;
+if max < age then max = age;
+keep max ;
+if k;
+run;
+
+data test;
+set sashelp.class;
+rename name = name1;
+rename age = age1;
+rename height = height1;
+run;
+
+
+
+data test;
+set sashelp.class;
+
+rename name = name1 age = age1  height = height1;
+put _ALL_;
+run;
+
+
+data test(rename = ( name = name1 
+                     age = age1  
+                     height = height1) );
+set sashelp.class;
+put _ALL_;
+run;
+
+
+data test;
+set sashelp.class(rename = ( name = name1 
+                     age = age1  
+                     height = height1) );
+put _ALL_;
+run;
+
+
+
+
+data test;
+set sashelp.class;
+label name = 'first name of the student'
+	  age = 'total age of the student';
+put _ALL_;
+run;
+
+data t2;
+set test;
+run;
+
+proc print data = test label;
+label name = 'temp first name of the student'
+	  age = 'temp total age of the student';
+run;
+
+
+
+data test;
+set sashelp.class(firstobs = 4 obs = 18);
+run;
+
+
+proc sort data = sashelp.class out = t1 ;
+by age ;
+run;
+
+
+proc sort data = sashelp.class out = t1 ;
+by sex age ;
+run;
+
+
+
+proc sort data = sashelp.class out = t1 ;
+by descending sex  descending age ;
+run;
+
+
+
+
+
+proc sort data = sashelp.class out = t1 ;
+by descending sex  descending age  descending height;
+run;
+
+
+
+
+
+
+proc sort data = sashelp.prdsal2 out = t1 ;
+by  country descending state  actual;
+run;
+
+
+
+/*nodupkey  */
+proc sort data = sashelp.prdsal2 out = countrylist(keep = country) nodupkey;
+by  country ;
+run;
+
+/* nodupkey  */
+proc sort data = sashelp.prdsal2 out = countrylist(keep = country state) nodupkey;
+by  country state ;
+run;
+
+
+
+data test;
+set sashelp.prdsal2(keep = country state prodtype product);
+run;
+
+/* nodup  */
+proc sort data = test  out = test_UNQ  nodup; /*noduprecs*/
+by  _ALL_ ;
+run;
+
+
+data test;
+input name $ age sal @@;
+datalines;
+AA 12 12000 AA 12 13000 AA 12 13000
+AA 12 12000
+BB 12 12000 BB 12 13000 BB 12 13000
+BB 12 12000
+;run;
+
+proc sort data = test out = t1 nodup;
+by name;
+run;
+
+proc sort data = test out = t2 nodup;
+by _ALL_;
+run;
+
+
+
+data test;
+set sashelp.class;
+where age = 14;
+/* if age = 14; */
+run;
+
+data test;
+set sashelp.class;
+tot = age + height + weight;
+/* if tot gt 190; */
+where tot gt 190;
+run;
+
+
+data test;
+set sashelp.class;
+where age = '14';
+/* if age = '14'; */
+run;
+
+
+
+proc print data = sashelp.class;
+/* where age = 14; */
+if age = '14';
+run;
+
+proc print data = sashelp.class(where = (age = 14));
+run;
+
+
+proc print data = sashelp.class(if = (age = 14));
+run;
+
+
+
+
+
+
+
+
+data test( where = (tot gt 200));
+set sashelp.class;
+tot = age+height+weight ;
+run;
+
+
+
+
+
+/* ASSIGNMENT: MODIFY THE BELOW PROGRAM TO 
+			   READ EVERY 5TH OBSERVATION WITHOUT USING MOD*/
+data test1;
+NUM + 5;
+set sashelp.class nobs=k POINT = NUM;
+if num gt K then STOP;
+OUTPUT;
+run;
+
+
+
+
+
+
+
+
+
+
+
+
+

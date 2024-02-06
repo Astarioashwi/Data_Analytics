@@ -1,0 +1,168 @@
+%let num = 3;
+proc printto log = "/folders/myshortcuts/My_SAS_Folder/CE_CODE/temp/_&num._mylog_&sysdate..txt";
+run;
+
+
+
+
+
+proc sql;
+select name into: nm
+from sashelp.class;
+quit;
+
+%put &nm.;
+
+data test;
+set  sashelp.class;
+call symput( 'n',name);
+run;
+%put &n.;
+
+
+
+
+proc sql;
+select sum(age) into tot
+from sashelp.class;
+quit;
+
+%put &tot.;
+
+
+
+proc sql;
+select name  into: list separated by ','
+from sashelp.class;
+quit;
+
+%put &list.;
+
+
+
+
+
+
+proc sql;
+select name  into: name1 - :name19
+from sashelp.class;
+quit;
+
+%put _USER_;
+
+
+
+
+proc sql noprint;
+select count(name ) into: cnt 
+from sashelp.class;
+%let cnt = &cnt.;
+select name  into: name1 - :name&cnt.
+from sashelp.class;
+quit;
+
+%put  --> &cnt.;
+
+
+
+
+
+
+proc sql;
+select sum(age), sum(height) , sum( weight) 
+			into: tot1, :tot2, :tot3
+from sashelp.class;
+quit;
+
+%put &tot1. &tot2. &tot3.;
+
+
+
+
+
+
+proc sql noprint;
+select name , age 
+			into: tot1 separated by ', ', 
+				:tot2 separated by ','
+from sashelp.class;
+quit;
+
+%put &tot1. &tot2. ;
+
+
+
+
+proc printto;
+run;
+
+
+Data test;
+infile "/folders/myshortcuts/My_SAS_Folder/CE_CODE/temp/_&num._mylog_&sysdate..txt";
+input chk $ 1-5;
+if upcase(chk) = 'ERROR' then output;
+run;
+
+
+/* filename email */
+/* https://documentation.sas.com/?docsetId=lestmtsglobal&docsetTarget=n0ig2krarrz6vtn1aw9zzvtez4qo.htm&docsetVersion=9.4&locale=en */
+
+
+%include '/folders/myshortcuts/My_SAS_Folder/Program 1.sas' ;
+
+
+data test;
+set sashelp.class;
+rename name = name1;
+run;
+
+
+
+proc datasets lib = work;
+modify test;
+rename name1 = new_name1 ;
+rename age = new_age;
+run;
+
+libname new '/folders/myshortcuts/My_SAS_Folder/CE_CODE/temp';
+
+proc copy in = sashelp out = new memtype = data;
+run;
+
+
+%macro change_var_name(lib=,ds=,prefix=);
+proc contents data=&lib..&ds. out=varname(keep=name) noprint;
+run;
+proc sql noprint;
+select count(name) into: cnt 
+from varname;
+%let cnt = &cnt.;
+select name  into: name1 - :name&cnt.
+from varname;
+quit;
+
+%put &name1.;
+proc datasets lib=&lib. noprint;
+modify &ds.;
+%do i=1 %to &cnt.;
+rename &&name&i.=&prefix._&&name&i.;
+%end;
+quit;
+%mend change_var_name;
+
+/* %change_var_name(lib=work,ds=ENSO,prefix=x); */
+
+proc sql noprint;
+create table datasets as
+select distinct memname from sashelp.vtable
+where libname='NEW';
+quit;
+
+data new;
+set work.datasets;
+call execute('%change_var_name(lib=new,ds='||memname||',prefix=x)');
+run;
+
+proc printto log = "/folders/myshortcuts/My_SAS_Folder/CE_CODE/temp/_mylog_&sysdate..txt";
+run;
+

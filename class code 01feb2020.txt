@@ -1,0 +1,159 @@
+
+data test;
+set sashelp.class;
+call symput ('age', age);
+if age = &age then x = 1;
+else x = 0;
+run;
+
+
+
+data test;
+set sashelp.class;
+%let age1 = 14;
+if age = &age1 then x = 1;
+else x = 0;
+run;
+
+/* ------------------------------------------------- */
+%macro first;
+	proc print data = sashelp.class;
+	run;
+%mend;
+
+option mprint;
+%first;%first;
+%first;%first;
+%first;%first;
+%first;
+
+
+
+
+
+/* ------------------------------------------------- */
+%macro printit (ds = );
+
+	proc print data = sashelp.&ds;
+	run;
+	
+%mend;
+
+
+%printit (ds= air);
+%printit (ds= class);
+
+
+
+
+/* ------------------------------------------------- */
+%macro printit1 (ds1 = , ds2= , ds3= , ds4= );
+
+	proc print data = sashelp.&ds1;run;
+	proc print data = sashelp.&ds2;run;
+	proc print data = sashelp.&ds3;run;
+	proc print data = sashelp.&ds4;run;
+	
+%mend;
+
+
+%printit1 (ds1 = air , ds2= class , ds3=buy , ds4=adsmsg );
+
+
+/* ------------------------------------------------- */
+%macro printit1 (ds1 = , ds2= , ds3= , ds4= );
+options obs = 5;
+	proc print data = sashelp.&ds1;run;
+	proc print data = sashelp.&ds2;run;
+	proc print data = sashelp.&ds3;run;
+	proc print data = sashelp.&ds4;run;
+options obs = max;	
+%mend;
+%printit1 (ds1 = air , ds2= class , ds3=buy , ds4=adsmsg );
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------- */
+%macro printit1 (ds1 = , ds2= , ds3= , ds4= , obs = );
+
+	proc print data = sashelp.&ds1(obs = &obs.);run;
+	proc print data = sashelp.&ds2(obs = &obs.);run;
+	proc print data = sashelp.&ds3(obs = &obs.);run;
+	proc print data = sashelp.&ds4(obs = &obs.);run;
+
+%mend;
+
+%printit1 (ds1 = air , ds2= class , ds3=buy , ds4=adsmsg , obs = 5);
+
+
+
+/* ------------------------------------------------- */
+%macro printit1 (lib = , ds1 = , ds2= , ds3= , ds4= , obs = );
+
+	proc print data = &lib..&ds1(obs = &obs.);run;
+	proc print data = &lib..&ds2(obs = &obs.);run;
+	proc print data = &lib..&ds3(obs = &obs.);run;
+	proc print data = &lib..&ds4(obs = &obs.);run;
+
+%mend;
+
+%printit1 (lib =  sashelp, ds1 = air , ds2= class , ds3=buy , ds4=adsmsg , obs = 5);
+
+
+
+
+
+/* ------------------------------------------------- */
+%macro printit1 (lib = , ds1 = , ds2= , ds3= , ds4= , obs = );
+	%do i = 1 %to 4;
+		proc print data = &lib..&&ds&i(obs = &obs.);
+		run;
+	%end;	
+%mend;
+
+%printit1 (lib =  sashelp, ds1 = air , ds2= class , ds3=buy , ds4=adsmsg , obs = 5);
+
+
+
+
+
+
+/* ------------------------------------------------- */
+%macro printit1 (lib = , dslist =  , obs = );
+
+	%do i = 1 %to %sysfunc(countw(&dslist));
+		proc print data = &lib..%scan( &dslist , &i) (obs = &obs.);
+		run;
+	%end;	
+%mend;
+
+%printit1 (lib =  sashelp, dslist = air  class  buy  adsmsg , obs = 5);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

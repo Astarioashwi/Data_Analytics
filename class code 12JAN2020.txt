@@ -1,0 +1,197 @@
+data test;
+set sashelp.class end = last;
+TOT + AGE;
+if last; keep TOT;
+run;
+
+Data T2;
+set sashelp.class;
+if _N_ = 1 then set test;
+run;
+
+/* assignment: modify the below program to replace missing 
+values with mean of the same variable */
+data test;
+set sashelp.yr1001;
+array new(*) S:;
+do i = 1 to dim(new);
+	if new(i) = . then new(I) = 0;
+end;
+run;
+
+
+data test;
+set sashelp.class;
+array tt(3);
+run;
+
+
+
+data test;
+set sashelp.class;
+array tt(3) _temporary_;
+run;
+
+
+data test;
+set sashelp.class;
+array tt(3) $10;
+run;
+
+
+
+data test;
+set sashelp.class;
+array tt(3) (1,2,3);
+run;
+
+proc means data = sashelp.class sum;
+var age height;
+run;
+
+
+
+
+proc means data = sashelp.class sum;
+var age height;
+output out = t1
+sum = ;
+run;
+
+
+
+
+proc means data = sashelp.class sum;
+var age height;
+output out = t1
+sum = S1 S2
+mean = M1 M2;
+run;
+
+
+
+proc means data = sashelp.yr1001 noprint;
+var S:;
+output out = t1
+sum = 
+mean = 
+p50 = / autoname autolabel;
+run;
+
+
+proc means data = sashelp.yr1001 noprint;
+var S:;
+output out = t1
+sum = S1-S504
+mean = M1- m504
+p50 = p1 - p504;
+run;
+
+
+proc means data = sashelp.prdsal2 noprint;
+var actual;
+class country;
+output out = t3
+sum= ;
+run;
+
+
+
+proc means data = sashelp.prdsal2 sum;
+var actual;
+class country state ;
+run;
+
+
+
+proc means data = sashelp.prdsal2 noprint;
+var actual;
+class country state ;
+output out = t3
+sum= ;
+run;
+
+
+
+proc means data = sashelp.prdsal2 noprint nway;
+var actual;
+class country state ;
+output out = t3
+sum= ;
+run;
+
+
+
+proc means data = sashelp.prdsal2 noprint  nway;
+var actual;
+class country state year;
+output out = t3
+sum= ;
+run;
+
+
+proc freq data = sashelp.class;
+run;
+
+
+proc freq data = sashelp.class;
+table sex;
+run;
+
+
+
+proc freq data = sashelp.class;
+table sex ;
+tables age ;
+run;
+
+
+
+
+proc freq data = sashelp.class;
+table sex / nopercent nocum ;
+run;
+
+
+proc freq data = sashelp.class;
+table sex / out = t1 ;
+
+run;
+
+
+
+
+proc freq data = sashelp.prdsal2;
+table country * state;
+
+run;
+
+
+
+proc freq data = sashelp.prdsal2;
+table country * state / list out = t3;
+run;
+
+
+
+
+
+
+proc freq data = sashelp.prdsal2;
+table country  state / out = t9;
+
+run;
+
+proc freq data = sashelp.prdsal2;
+table country  / out = t8;
+table state / out = t9;
+run;
+
+
+
+
+
+
+
+
+

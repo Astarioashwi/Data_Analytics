@@ -1,0 +1,272 @@
+data test;
+input name $ age sal;
+datalines;
+Mr.  Ram  32  34000
+Mr.  Shiv 33  23000
+Mr.  Rom  34  12000
+;
+Run;
+
+
+data test;
+infile datalines missover;
+input name $ age sal;
+datalines;
+Ram  32  34000
+Shiv     23000
+Rom  34  12000
+;
+Run;
+
+
+
+
+data test;
+infile datalines dsd;
+input name $ age $ sal $;
+datalines;
+Ram 32 34000
+Shiv 45 23000
+Rom 34 12000
+;
+Run;
+
+
+
+
+data test;
+infile datalines dsd;
+input name $ age $ sal $;
+datalines;
+Ram,32,34000
+Shiv,45,23000
+Rom,34,12000
+;
+Run;
+
+
+
+
+data test;
+infile datalines dsd;
+input name $ age $ sal $;
+datalines;
+Ram,32,
+Shiv,,23000
+,34,12000
+;
+Run;
+
+
+
+data test;
+infile datalines ;
+input name $ age $ sal $;
+datalines;
+Ram,32,
+Shiv,,23000
+,34,12000
+;
+Run;
+
+
+
+
+
+
+data test;
+infile datalines dlm = ',';
+input name $ age $ sal $;
+datalines;
+Ram,32,
+Shiv,,23000
+34,12000
+;
+Run;
+
+proc import  
+datafile = '/folders/myshortcuts/My_SAS_Folder/READ_this_file_with_data_step.csv'
+out = Mydata;
+run;
+
+/* Assignment: Please tweek the below code to read the datafile correctly 
+The file is plaed in your google drive*/
+data T1;
+infile '/folders/myshortcuts/My_SAS_Folder/READ_this_file_with_data_step.csv' dsd firstobs = 2;
+input COUNTRY $ STATE $ COUNTY $ ACTUAL $ PREDICT PRODTYPE PRODUCT YEAR QUARTER MONTH 
+	  MONYR;
+run;
+
+
+data test;
+input num;
+datalines;
+2000
+;run;
+
+
+
+data test;
+input num;
+datalines;
+-200
+;run;
+
+
+
+data test;
+input num;
+datalines;
+2e3
+;run;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+data test;
+informat num dollar.;
+format num dollar13.;
+input num;
+datalines;
+$200
+$2,000
+$20,000
+$200,000
+$2,000,000
+;run;
+
+
+
+
+data test;
+informat num dollar.;
+format num dollar15.3;
+input num;
+datalines;
+$200.12
+$2,000.76
+$20,000.54
+$200,000.654
+$2,000,000.112
+;run;
+
+
+
+data test;
+informat num comma.;
+format num comma7.1;
+input num;
+datalines;
+2,000.1
+;run;
+
+
+
+
+data test;
+informat num dollar.;
+format num comma15.3;
+input num;
+datalines;
+$200.12
+$2,000.76
+$20,000.54
+$200,000.654
+$2,000,000.1129
+;run;
+
+
+
+
+data test;
+informat num 7.3;
+input num;
+datalines;
+20012
+200013
+2000023
+;run;
+
+
+
+
+
+
+
+
+
+
+
+data test;
+informat DOB date9.;
+format dob date9.;
+input DOB;
+datalines;
+31JAN1960
+;run;
+
+
+
+
+data test;
+informat DOB date9.;
+format dob mmddyy10.;
+input DOB;
+datalines;
+31JAN1960
+;run;
+
+
+
+
+data test;
+informat DOB date9.;
+format dob mmddyy10.;
+input DOB;
+datalines;
+01/31/1960
+;run;
+
+
+
+
+
+
+data test;
+format dob mmddyy10.;
+input DOB;
+datalines;
+10
+;run;
+
+
+data test;
+informat dob dollar.;
+format dob date9.;
+input DOB;
+datalines;
+-$20
+;run;
+
+
+
+
+
+
+
+
+
+
+

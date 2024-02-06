@@ -1,0 +1,151 @@
+data test;
+set sashelp.class end = k;
+Tot + age;
+if k;
+keep tot;
+run;
+
+proc means data = sashelp.class sum;
+class sex;
+var age;
+run;
+
+proc sort data = sashelp.class out=t1;
+by sex;
+run;
+
+data test;
+set t1;
+by sex;
+if first.sex then tot= 0;
+Tot + age;
+keep sex  tot;
+if last.sex;
+run;
+
+
+
+
+proc sort data = sashelp.prdsal2 out=t1;
+by country;
+run;
+
+data test;
+set t1;
+by country;
+if first.country then tot= 0;
+Tot + actual;
+keep country  tot;
+if last.country;
+run;
+
+
+proc means data = sashelp.prdsal2 min;
+class country;
+var actual;
+run;
+
+
+
+
+proc sort data = sashelp.prdsal2 out=t1;
+by country actual;
+run;
+
+data test( rename = (actual = min));
+set t1;
+by country;
+if first.country ;
+keep country actual;
+run;
+
+
+
+proc sort data = sashelp.prdsal2 out=t1;
+by country actual;
+run;
+data test( rename = (actual = max));
+set t1;
+by country;
+if last.country ;
+keep country actual;
+run;
+
+
+
+
+proc sort data = sashelp.prdsal2 out=t1;
+by  country descending actual;
+run;
+data test( keep = country actual rename = (actual = max));
+set t1;
+by country ;
+if first.country then count = 0;
+COUNT + 1;
+if count le 3;
+run;
+
+
+
+
+proc means data = sashelp.prdsal2 sum;
+class country state ;
+var actual;
+run;
+
+
+
+
+proc sort data = sashelp.prdsal2 out=t1;
+by country state actual;
+run;
+data test;
+set t1;
+by country state ;
+if first.state then tot = 0;
+tot + actual;
+if last.state;
+keep country state tot;
+format tot dollar15.2;
+run;
+
+
+data test;
+input HID $ PID $ @@;
+datalines;
+1001 P1 1001 P2 1001 P3
+1002 P1
+1003 x1 1003 x2
+1004 y1 1004 y2 1004 Y3 1004 Y4 1004 Y5
+1005 h1
+;run;
+
+/* find HID with one PID only; */
+
+data out;
+set test;
+by HID;
+if first.hid = 1 and last.hid = 1;
+run;
+
+/* show all the observation for the HIDs with multiple PIDs; */
+
+
+
+data out(drop = x);
+set test;
+by HID;
+/* if first.hid = 1 and last.hid = 1 then x=1; */
+/* else output; */
+if first.hid + last.hid  lt 2;
+run;
+
+
+
+
+
+
+
+
+
+
